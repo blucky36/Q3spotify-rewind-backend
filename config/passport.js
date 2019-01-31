@@ -18,8 +18,9 @@ passport.use(new SpotifyStrategy({
   (accessToken, refreshToken, profile, done) => {
     console.log(profile)
     const user = {
-      spotifyId: profile.id,
-      token: accessToken
+      profile,
+      accessToken,
+      refreshToken,
     }
     done(null, user)
   }
