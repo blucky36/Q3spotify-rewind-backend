@@ -9,9 +9,9 @@ exports.seed = function(knex) {
           spotify_playlist_id:'19qKzDBqnI0GKkGzU8Owcw',
           name: '5rock'
         }
-      ]);
-    });
+      ])
+    })
     .then(() => {
       return knex.raw("SELECT setval('playlists_id_seq', (SELECT MAX(id) FROM playlists));")
     })
-};
+}
