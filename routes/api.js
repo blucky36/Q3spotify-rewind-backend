@@ -27,5 +27,14 @@ router.get('/users/:uid',(req,res) => {
     })
   })
 })
+.delete('/users/:uid/playlists/:pid', (req,res) =>{
+  const uid = req.params.uid
+  const pid = req.params.pid
+  knex('users').where({spotify_id:uid}).first().then(user => {
+    knex('playlists').where({user_id:user.id, spotify_playlist_id:pid}).first().del().returning('*').then(playlist => {
+      res.send(playlist)
+    })
+  })
+})
 
 module.exports = router
