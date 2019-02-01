@@ -1,13 +1,14 @@
 
-exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
+exports.seed = function(knex) {
+  return knex('playlists').del()
     .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+      return knex('playlists').insert([
+        {
+          id:0,
+          user_id:0,
+          spotify_playlist_id:'1249465062',
+          name: '5rock'
+        }
       ]);
     });
 };
