@@ -11,7 +11,8 @@ require('dotenv').config()
 const corsOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL : true
 
 
-var indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
+const apiRouter = require('./routes/api')
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/auth', authRouter);
+app.use('/api', apiRouter)
 
 module.exports = app;
