@@ -5,7 +5,7 @@ const scope = ['playlist-read-private','playlist-modify-private','playlist-modif
 
 
 require('dotenv').config()
-const appUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL : 'http://localhost:3005/auth'
+const appUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL : 'http://localhost:3000'
 
 
 router.get('/spotify', passport.authenticate('spotify', { scope, showDialog:true }))
