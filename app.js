@@ -10,11 +10,12 @@ require('dotenv').config()
 
 const corsOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL : true
 
-app.use(cors({ origin: corsOrigin }))
 
 var indexRouter = require('./routes/index');
 
 var app = express();
+
+app.use(cors({ origin: corsOrigin }))
 
 app.use(passport.initialize())
 require('./config/passport')
