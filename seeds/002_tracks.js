@@ -28,6 +28,9 @@ exports.seed = function(knex) {
           spotify_id: '5UgT7w6zVZjP3oyawMzbiK',
           spotify_uri: 'spotify:track:5UgT7w6zVZjP3oyawMzbiK'
         },
-      ]);
-    });
-};
+      ])
+    })
+    .then(() => {
+      return knex.raw("SELECT setval('tracks_id_seq', (SELECT MAX(id) FROM tracks));")
+    })
+}

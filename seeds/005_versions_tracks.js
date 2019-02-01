@@ -28,6 +28,9 @@ exports.seed = function(knex, Promise) {
           version_id:0,
           track_id:4
         },
-      ]);
-    });
-};
+      ])
+    })
+    .then(() => {
+      return knex.raw("SELECT setval('versions_tracks_id_seq', (SELECT MAX(id) FROM versions_tracks));")
+    })
+}

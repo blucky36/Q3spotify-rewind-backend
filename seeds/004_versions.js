@@ -7,6 +7,9 @@ exports.seed = function(knex, Promise) {
           id:0,
           playlist_id:0,
         }
-      ]);
-    });
-};
+      ])
+    })
+    .then(() => {
+      return knex.raw("SELECT setval('versions_id_seq', (SELECT MAX(id) FROM versions));")
+    })
+}

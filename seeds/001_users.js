@@ -19,7 +19,7 @@ exports.seed = function(knex) {
         spotify_id:'tuckernemcek22',
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi5TZcoTN4nJ0kxBe9hTKXoSMlwlgsQ05QT-WrssZMmQuo0ZER'
       }]);
-    });
+    })
     .then(() => {
       return knex.raw("SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));")
     })
