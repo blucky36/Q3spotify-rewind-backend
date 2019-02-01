@@ -12,6 +12,7 @@ const corsOrigin = process.env.NODE_ENV === 'production' ? process.env.REACT_APP
 
 
 const authRouter = require('./routes/auth');
+
 const apiRouter = require('./routes/api')
 
 var app = express();
