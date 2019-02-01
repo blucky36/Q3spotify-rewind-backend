@@ -10,7 +10,6 @@ const appUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL
 
 router.get('/auth/spotify', passport.authenticate('spotify', { scope, showDialog:true }))
 
-
 router.get('/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/', session: false }), (req, res) => {
     const accessToken = req.user.accessToken
@@ -24,6 +23,5 @@ router.get('/auth/spotify/callback',
     const userId = req.query.userId
     res.send({token, userId})
   })
-
 
 module.exports = router;
