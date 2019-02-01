@@ -13,7 +13,7 @@ passport.deserializeUser((user, done) => {
 passport.use(new SpotifyStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/auth/spotify/callback',
+    callbackURL: 'http://localhost:3005/auth/spotify/callback',
   },
   (accessToken, refreshToken, profile, done) => {
     console.log(profile)
