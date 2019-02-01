@@ -4,29 +4,29 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       return knex('versions_tracks').insert([
         {
-          id:0,
-          version_id:0,
-          track_id:0
-        },
-        {
           id:1,
-          version_id:0,
+          version_id:1,
           track_id:1
         },
         {
           id:2,
-          version_id:0,
+          version_id:1,
           track_id:2
         },
         {
           id:3,
-          version_id:0,
+          version_id:1,
           track_id:3
         },
         {
           id:4,
-          version_id:0,
+          version_id:1,
           track_id:4
+        },
+        {
+          id:5,
+          version_id:1,
+          track_id:5
         },
       ])
     })

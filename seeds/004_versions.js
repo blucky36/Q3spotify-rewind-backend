@@ -4,8 +4,8 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       return knex('versions').insert([
         {
-          id:0,
-          playlist_id:0,
+          id:1,
+          playlist_id:1,
         }
       ])
     })

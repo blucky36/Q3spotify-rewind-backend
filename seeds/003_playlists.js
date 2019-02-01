@@ -4,8 +4,8 @@ exports.seed = function(knex) {
     .then(function () {
       return knex('playlists').insert([
         {
-          id:0,
-          user_id:0,
+          id:1,
+          user_id:1,
           spotify_playlist_id:'19qKzDBqnI0GKkGzU8Owcw',
           name: '5rock'
         }
