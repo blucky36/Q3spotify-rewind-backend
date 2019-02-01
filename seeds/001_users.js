@@ -10,13 +10,13 @@ exports.seed = function(knex) {
       {
         id: 1,
         name: 'Blake Bollman',
-        spotify_id: '1234567890',
+        spotify_id: '1221476620',
         avatar: 'https://i5.walmartimages.com/asr/80850417-1302-429b-abbc-6ecdd5042319_1.2dfc1c7bcb8727e589264c1707e86e63.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF'
       },
       {
         id:2,
         name: 'Tucker Nemcek',
-        spotify_id:'1234567890',
+        spotify_id:'tuckernemcek22',
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi5TZcoTN4nJ0kxBe9hTKXoSMlwlgsQ05QT-WrssZMmQuo0ZER'
       }]);
     });

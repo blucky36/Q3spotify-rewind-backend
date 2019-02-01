@@ -1,13 +1,33 @@
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
+  return knex('versions_tracks').del()
     .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+      return knex('versions_tracks').insert([
+        {
+          id:0,
+          version_id:0,
+          track_id:0
+        },
+        {
+          id:1,
+          version_id:0,
+          track_id:1
+        },
+        {
+          id:2,
+          version_id:0,
+          track_id:2
+        },
+        {
+          id:3,
+          version_id:0,
+          track_id:3
+        },
+        {
+          id:4,
+          version_id:0,
+          track_id:4
+        },
       ]);
     });
 };

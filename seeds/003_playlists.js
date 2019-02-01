@@ -6,7 +6,7 @@ exports.seed = function(knex) {
         {
           id:0,
           user_id:0,
-          spotify_playlist_id:'1249465062',
+          spotify_playlist_id:'19qKzDBqnI0GKkGzU8Owcw',
           name: '5rock'
         }
       ]);
