@@ -15,7 +15,7 @@ router.get('/spotify/callback',
     const accessToken = req.user.accessToken
     const refreshToken = req.user.refreshToken
     const userId = req.user.profile.id
-    res.redirect(`${appUrl}/login?accessToken=${accessToken}&userId=${userId}`)
+    res.redirect(`${appUrl}/handlelogin?accessToken=${accessToken}&userId=${userId}`)
   })
 
   router.get('/login', (req,res) => {

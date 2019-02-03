@@ -6,6 +6,7 @@ exports.seed = function(knex, Promise) {
         {
           id:1,
           playlist_id:1,
+          notes:'first version',
         }
       ])
     })
