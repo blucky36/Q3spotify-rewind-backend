@@ -4,7 +4,26 @@ const knex = require('../knex')
 
 
 
-router.get('/users/:uid', (req, res) => {
+router.get('/users', (req,res) => {
+  knex('users').then(users => {
+    res.send(users)
+  })
+})
+
+.delete('/users/:uid', (req, res) => {
+    const uid = req.params.uid
+    knex('users').where({ spotify_id: uid }).first().del().returning('*').first().then(user => {
+      res.send(user)
+    })
+  })
+
+.get('/users/:uid', (req, res) => {
+    const uid = req.params.uid
+    knex('users').where({ spotify_id: uid }).first().then(user => {
+      res.send(user)
+    })
+  })
+.get('/users/:uid', (req, res) => {
     const uid = req.params.uid
     knex('users').where({ spotify_id: uid }).first().then(user => {
       res.send(user)
