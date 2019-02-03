@@ -39,6 +39,27 @@ router.get('/users', (req,res) => {
     })
   })
 
+  .post("/users/:uid/playlists", (req,res) => {
+    const user_id = Number(req.params.uid)
+    const {
+      spotify_playlist_id,
+      name,
+      notes,
+      trackArray
+    } = req.body
+    if(!spotify_playlist_id || !name || !user_id || !notes || !trackArray)return
+    knex("playlists").insert({spotify_playlist_id,name,user_id}).returning("*").then(playlist=>{
+      return knex("versions").insert({playlist_id:playlist[0].id,notes}).returning("*").then(version=>{
+        trackArray.forEach(track=>{
+          knex("tracks").insert({spotify_uri:track.track.uri,name:track.track.name,artist:track.track.artists[0].name,spotify_id:track.track.id}).returning("*").then(t=>{
+            knex("versions_tracks").insert({version_id:version[0].id,track_id:t[0].id}).returning("*").then(data=>{})
+          })
+        })
+        return version[0]
+      })
+    }).then(ver => res.status(201).send(ver))
+  })
+
   .get('/users/:uid/playlists/:pid', (req, res) => {
     const uid = req.params.uid
     const pid = req.params.pid
