@@ -16,7 +16,9 @@ const authRouter = require('./routes/auth');
 const apiRouter = require('./routes/api')
 
 var app = express();
-
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cors({ origin: corsOrigin }))
 
 app.use(passport.initialize())
