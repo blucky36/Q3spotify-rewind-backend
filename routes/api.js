@@ -105,4 +105,27 @@ router.get('/users', (req, res) => {
     })
   })
 
+  .get("/users/:uid/all", (req, res) => {
+    let tracksObj = {}
+    return knex("users").where("users.spotify_id", req.params.uid).first().then(user => {
+      return knex("playlists").where({ "playlists.user_id": user.id }).then(pArr => {
+        let pArrIds = pArr.map(p => p.id)
+        return knex("versions").whereIn("playlist_id", pArrIds).then(verArr => {
+          console.log(verArr)
+          return Promise.all([...verArr.map((v) => {
+            return knex("versions_tracks").where({ "versions_tracks.version_id": v.id })
+              .innerJoin("tracks", "versions_tracks.track_id", "tracks.id").then(trackArr => {
+                return [trackArr,v.id]
+              })
+          }, {})]).then(tracks => ({ tracks:tracks.reduce((accum,t,i) => {
+            accum[t[1]] = t[0]
+            return accum
+          },{}), verArr, pArr, user }))
+        })
+      })
+    }).then(oi => {
+      res.status(200).send({ ...oi })
+    })
+  })
+
 module.exports = router
