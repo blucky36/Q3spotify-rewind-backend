@@ -43,7 +43,7 @@ router.get('/users', (req, res) => {
     } = req.body
     if (!spotify_playlist_id || !name || !spotify_id || !notes || !trackArray) return
     knex('users').where({ spotify_id }).first().then(user => {
-      knex("playlists").insert({ spotify_playlist_id, name, user_id:user.id }).returning("*").then(playlist => {
+      return knex("playlists").insert({ spotify_playlist_id, name, user_id:user.id }).returning("*").then(playlist => {
         return knex("versions").insert({ playlist_id: playlist[0].id, notes }).returning("*").then(version => {
           trackArray.forEach(track => {
             knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id }).returning("*").then(t => {
