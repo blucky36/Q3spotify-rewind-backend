@@ -4,26 +4,20 @@ const knex = require('../knex')
 
 
 
-router.get('/users', (req,res) => {
-  knex('users').then(users => {
-    res.send(users)
+router.get('/users', (req, res) => {
+    knex('users').then(users => {
+      res.send(users)
+    })
   })
-})
 
-.delete('/users/:uid', (req, res) => {
+  .delete('/users/:uid', (req, res) => {
     const uid = req.params.uid
     knex('users').where({ spotify_id: uid }).first().del().returning('*').first().then(user => {
       res.send(user)
     })
   })
 
-.get('/users/:uid', (req, res) => {
-    const uid = req.params.uid
-    knex('users').where({ spotify_id: uid }).first().then(user => {
-      res.send(user)
-    })
-  })
-.get('/users/:uid', (req, res) => {
+  .get('/users/:uid', (req, res) => {
     const uid = req.params.uid
     knex('users').where({ spotify_id: uid }).first().then(user => {
       res.send(user)
@@ -39,23 +33,25 @@ router.get('/users', (req,res) => {
     })
   })
 
-  .post("/users/:uid/playlists", (req,res) => {
-    const user_id = Number(req.params.uid)
+  .post("/users/:uid/playlists", (req, res) => {
+    const spotify_id = req.params.uid
     const {
       spotify_playlist_id,
       name,
       notes,
       trackArray
     } = req.body
-    if(!spotify_playlist_id || !name || !user_id || !notes || !trackArray)return
-    knex("playlists").insert({spotify_playlist_id,name,user_id}).returning("*").then(playlist=>{
-      return knex("versions").insert({playlist_id:playlist[0].id,notes}).returning("*").then(version=>{
-        trackArray.forEach(track=>{
-          knex("tracks").insert({spotify_uri:track.track.uri,name:track.track.name,artist:track.track.artists[0].name,spotify_id:track.track.id}).returning("*").then(t=>{
-            knex("versions_tracks").insert({version_id:version[0].id,track_id:t[0].id}).returning("*").then(data=>{})
+    if (!spotify_playlist_id || !name || !spotify_id || !notes || !trackArray) return
+    knex('users').where({ spotify_id }).first().then(user => {
+      knex("playlists").insert({ spotify_playlist_id, name, user_id:user.id }).returning("*").then(playlist => {
+        return knex("versions").insert({ playlist_id: playlist[0].id, notes }).returning("*").then(version => {
+          trackArray.forEach(track => {
+            knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id }).returning("*").then(t => {
+              knex("versions_tracks").insert({ version_id: version[0].id, track_id: t[0].id }).returning("*").then(data => {})
+            })
           })
+          return version[0]
         })
-        return version[0]
       })
     }).then(ver => res.status(201).send(ver))
   })
@@ -104,12 +100,9 @@ router.get('/users', (req,res) => {
 
   .delete('/users/:uid/playlists/:pid/versions/:vid', (req, res) => {
     const vid = req.params.vid
-    knex('versions').where({'versions.id':vid}).del().returning('*').then(version => {
+    knex('versions').where({ 'versions.id': vid }).del().returning('*').then(version => {
       res.send(version)
     })
   })
-
-
-  .get('/tracks/')
 
 module.exports = router
