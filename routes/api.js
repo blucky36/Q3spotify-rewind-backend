@@ -114,7 +114,7 @@ router.get('/users', (req, res) => {
     const spotify_id = req.params.uid
     const spotify_playlist_id = req.params.pid
     const {
-      snapshot_id,
+      snapshot_id='1234',
       notes,
       trackArray
     } = req.body
