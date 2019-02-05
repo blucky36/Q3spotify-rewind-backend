@@ -38,6 +38,7 @@ router.get('/users', (req, res) => {
   .post("/users/:uid/playlists", (req, res, next) => {
     const spotify_id = req.params.uid
     const {
+      snapshot_id = 'default',
       spotify_playlist_id,
       name,
       notes,
@@ -53,7 +54,7 @@ router.get('/users', (req, res) => {
         console.log("inserts user");
         return knex("playlists").insert({ spotify_playlist_id, name, user_id: user.id }).returning("*").then(playlist => {
           console.log("inserts playlist");
-          return knex("versions").insert({ playlist_id: playlist[0].id, notes }).returning("*").then(version => {
+          return knex("versions").insert({ playlist_id: playlist[0].id, notes, snapshot_id }).returning("*").then(version => {
             console.log("inserts versions");
             trackArray.forEach(track => {
               knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id }).returning("*").then(t => {
