@@ -4,12 +4,18 @@ const knex = require('../knex')
 
 
 
+
+// get all user data for all users
+// pretty much just for debugging/screwing around
 router.get('/users', (req, res) => {
     knex('users').then(users => {
       res.send(users)
     })
   })
 
+  // delete data for a user from id
+  // pretty much also only for debugging
+  // uid is spotify user ID
   .delete('/users/:uid', (req, res) => {
     const uid = req.params.uid
     knex('users').where({ spotify_id: uid }).first().del().returning('*').first().then(user => {
@@ -17,6 +23,8 @@ router.get('/users', (req, res) => {
     })
   })
 
+  // get user data by user ID
+  // this route expects spotify ID
   .get('/users/:uid', (req, res) => {
     const uid = req.params.uid
     knex('users').where({ spotify_id: uid }).first().then(user => {
@@ -24,17 +32,21 @@ router.get('/users', (req, res) => {
     })
   })
 
+
+  // gets all playlists from playlists table
+  // that are associated with user
   .get('/users/:uid/playlists/', (req, res) => {
     const uid = req.params.uid
-    console.log(uid)
     knex('users').where({ spotify_id: uid }).first().then(user => {
-      console.log(user)
+      // ^ find user by spotify ID then return that row as user
       knex('playlists').where({ user_id: user.id }).then(playlists => {
+        // ^ then find all rows in playlists where the user_id column matches column id from users table
         res.send(playlists)
       })
     })
   })
 
+  // this posts a new playlist for a user
   .post("/users/:uid/playlists", (req, res, next) => {
     const spotify_id = req.params.uid
     const {
@@ -44,18 +56,16 @@ router.get('/users', (req, res) => {
       notes,
       trackArray
     } = req.body
-    console.log("here");
-    if (!spotify_playlist_id || !name || !spotify_id || !notes || !trackArray) return
+    if (!spotify_playlist_id || !name || !spotify_id || !notes || !trackArray) return //if any of these are not sent then skip
     knex('playlists').where({ spotify_playlist_id }).then(playlists => {
+      // ^ this looks in the playlists table for any playlists that have
+      // provided spotify ID .. if the playlist is already in DB then we skip
       if (playlists.length > 0) throw new Error('playlist exists')
     }).then(() => {
-      console.log("passes error handling");
       knex('users').where({ spotify_id }).first().then(user => {
-        console.log("inserts user");
+        // ^ get user by spotify_id
         return knex("playlists").insert({ spotify_playlist_id, name, user_id: user.id }).returning("*").then(playlist => {
-          console.log("inserts playlist");
           return knex("versions").insert({ playlist_id: playlist[0].id, notes, snapshot_id }).returning("*").then(version => {
-            console.log("inserts versions");
             trackArray.forEach(track => {
               knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id }).returning("*").then(t => {
                 knex("versions_tracks").insert({ version_id: version[0].id, track_id: t[0].id }).returning("*").then(data => {})
