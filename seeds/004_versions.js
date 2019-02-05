@@ -5,6 +5,7 @@ exports.seed = function(knex, Promise) {
       return knex('versions').insert([
         {
           id:1,
+          snapshot_id: 'aaaaaaaaa',
           playlist_id:1,
           notes:'first version',
         }

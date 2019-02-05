@@ -113,17 +113,26 @@ router.get('/users', (req, res) => {
     const spotify_id = req.params.uid
     const spotify_playlist_id = req.params.pid
     const {
+      snapshot_id,
       notes,
       trackArray
     } = req.body
+
     knex("playlists").where({ spotify_playlist_id }).returning("*").first().then(playlist => {
-      return knex("versions").insert({ playlist_id: playlist.id, notes }).returning("*").then(version => {
-        trackArray.forEach(track => {
-          knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id }).returning("*").then(t => {
-            knex("versions_tracks").insert({ version_id: version[0].id, track_id: t[0].id }).returning("*").then(data => {})
+      return knex("versions").where({ snapshot_id }).returning("*").then(versions => {
+        if (versions.length === 0) {
+          return knex("versions").insert({ playlist_id: playlist.id, snapshot_id, notes, }).returning('*').then(version => {
+
+            trackArray.forEach(track => {
+              knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id }).returning("*").then(t => {
+                knex("versions_tracks").insert({ version_id: version[0].id, track_id: t[0].id }).returning("*").then(data => {})
+              })
+            })
+            return version[0]
           })
-        })
-        return version[0]
+        } else {
+          return {error: 'Playlist already exists', version_id:versions[0].id}
+        }
       })
     }).then(ver => res.status(201).send(ver))
   })
