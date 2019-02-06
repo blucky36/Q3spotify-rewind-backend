@@ -132,7 +132,7 @@ router.get('/users', (req, res) => {
             return version[0]
           })
         } else {
-          return {error: 'Playlist already exists', version_id:versions[0].id}
+          return {error: 'Version already exists', ...versions[0]}
         }
       })
     }).then(ver => res.status(201).send(ver))
