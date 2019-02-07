@@ -2,7 +2,8 @@ const passport = require('passport')
 const SpotifyStrategy = require('passport-spotify').Strategy
 require('dotenv').config()
 
-const callbackURL = process.env.NODE_ENV === 'production' ? `${process.env.SERVER_URL}/auth/spotify/callback` : 'http://localhost:3000/auth/callback'
+const callbackURL = process.env.NODE_ENV === 'production' ? `${process.env.SERVER_URL}/auth/spotify/callback` : 'http://localhost:3005/auth/spotify/callback'
+console.log(callbackURL)
 
 passport.serializeUser((user, done) => {
   done(null, user)
