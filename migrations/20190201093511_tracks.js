@@ -5,6 +5,8 @@ exports.up = knex => {
     table.string("spotify_uri").notNullable()
     table.string("name").notNullable()
     table.string("artist").notNullable()
+    table.string("preview").defaultsTo("")
+    table.string("cover").defaultsTo("")
   })
 }
 

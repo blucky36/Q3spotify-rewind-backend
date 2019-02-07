@@ -57,7 +57,7 @@ router.get('/users', (req, res) => {
           return knex("versions").insert({ playlist_id: playlist[0].id, notes, snapshot_id }).returning("*").then(version => {
             console.log("inserts versions");
             trackArray.forEach(track => {
-              knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id }).returning("*").then(t => {
+              knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id, preview: track.track.preview_url, cover: track.track.album.images[0].url }).returning("*").then(t => {
                 knex("versions_tracks").insert({ version_id: version[0].id, track_id: t[0].id }).returning("*").then(data => {})
               })
             })
@@ -125,7 +125,7 @@ router.get('/users', (req, res) => {
           return knex("versions").insert({ playlist_id: playlist.id, snapshot_id, notes, }).returning('*').then(version => {
 
             trackArray.forEach(track => {
-              knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id }).returning("*").then(t => {
+              knex("tracks").insert({ spotify_uri: track.track.uri, name: track.track.name, artist: track.track.artists[0].name, spotify_id: track.track.id, preview: track.track.preview_url, cover: track.track.album.images[0].url }).returning("*").then(t => {
                 knex("versions_tracks").insert({ version_id: version[0].id, track_id: t[0].id }).returning("*").then(data => {})
               })
             })
